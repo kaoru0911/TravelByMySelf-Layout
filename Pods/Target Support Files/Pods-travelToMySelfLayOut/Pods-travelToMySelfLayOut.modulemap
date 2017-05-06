@@ -1,0 +1,6 @@
+framework module Pods_travelToMySelfLayOut {
+  umbrella header "Pods-travelToMySelfLayOut-umbrella.h"
+
+  export *
+  module * { export * }
+}

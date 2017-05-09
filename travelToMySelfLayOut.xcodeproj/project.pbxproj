@@ -30,6 +30,7 @@
 		22F0CFDB1E94F408008999FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 22F0CFDA1E94F408008999FB /* Assets.xcassets */; };
 		22F0CFDE1E94F408008999FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22F0CFDC1E94F408008999FB /* LaunchScreen.storyboard */; };
 		482EC1810FFE10239B486DC3 /* Pods_travelToMySelfLayOut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 165E7EED44AA757BB65FDE8F /* Pods_travelToMySelfLayOut.framework */; };
+		A7E7DAD41EBDB5420099E3ED /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E7DAD31EBDB5420099E3ED /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		22F0CFDD1E94F408008999FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		22F0CFDF1E94F408008999FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5B30CDC0CA7BED2424A0698C /* Pods-travelToMySelfLayOut.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelToMySelfLayOut.release.xcconfig"; path = "Pods/Target Support Files/Pods-travelToMySelfLayOut/Pods-travelToMySelfLayOut.release.xcconfig"; sourceTree = "<group>"; };
+		A7E7DAD31EBDB5420099E3ED /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		D107D7DCE5F983E4A42841CD /* Pods-travelToMySelfLayOut.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-travelToMySelfLayOut.debug.xcconfig"; path = "Pods/Target Support Files/Pods-travelToMySelfLayOut/Pods-travelToMySelfLayOut.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -126,6 +128,7 @@
 				221F32601EB0C37700447E24 /* SettingStartPointVC.swift */,
 				221F326C1EB0C83900447E24 /* AddViewPoint */,
 				22F0CFD51E94F408008999FB /* ViewController.swift */,
+				A7E7DAD31EBDB5420099E3ED /* MapViewController.swift */,
 				22ED60021EA6FF490036FCE9 /* viewPointTableViewCell.swift */,
 			);
 			name = C;
@@ -320,6 +323,7 @@
 				22ED5FFD1EA6FC410036FCE9 /* ViewPointAndPathStoraged.swift in Sources */,
 				22F0CFD41E94F408008999FB /* AppDelegate.swift in Sources */,
 				224117101EA7151F00488BBD /* BestPathCaculator.swift in Sources */,
+				A7E7DAD41EBDB5420099E3ED /* MapViewController.swift in Sources */,
 				221F32751EB0D5FF00447E24 /* ProduceScrollViewWithVCArray.swift in Sources */,
 				221F32711EB0C96300447E24 /* RearrangeScheduleCell.swift in Sources */,
 				221F32611EB0C37700447E24 /* SettingStartPointVC.swift in Sources */,

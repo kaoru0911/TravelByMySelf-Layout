@@ -11,37 +11,80 @@ import GoogleMaps
 import GooglePlaces
 import GooglePlacePicker
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-   
-    @IBOutlet weak var mapImageView: UIImageView!
-    @IBOutlet weak var spotTableView: UITableView!
-    @IBOutlet weak var spotSearchTextField: UITextField!
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate {
     
-    override func loadView() {
-        // Create a GMSCameraPosition that tells the map to display the
-        // coordinate -33.86,151.20 at zoom level 6.
-        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
-        let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-        mapView.isMyLocationEnabled = true
-        view = mapView
-        
-        // Creates a marker in the center of the map.
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
-        marker.title = "Sydney"
-        marker.snippet = "Australia"
-        marker.map = mapView
+    
+    
+    @IBOutlet weak var spotTextView: UITextView!
+    @IBOutlet weak var imageView: UIImageView!
+    
+    @IBOutlet weak var spotTableView: UITableView!
+    
+    var placeIdStorage:String!
+    
+    
+    // 用placeID取得google第一張地點照片，並呼叫loadImageForMetadata
+    func loadFirstPhotoForPlace(placeID: String) {
+        GMSPlacesClient.shared().lookUpPhotos(forPlaceID: self.placeIdStorage) { (photos, error) -> Void in
+            if let error = error {
+                // TODO: handle the error.
+                print("Error: \(error.localizedDescription)")
+            } else {
+                if let firstPhoto = photos?.results.first {
+                    self.loadImageForMetadata(photoMetadata: firstPhoto)
+                }
+            }
+        }
     }
+
+    
+    
+    // 選取要從陣列載入的相片，並放在imageView
+    func loadImageForMetadata(photoMetadata: GMSPlacePhotoMetadata) {
+        GMSPlacesClient.shared().loadPlacePhoto(photoMetadata, callback: {
+            (photo, error) -> Void in
+            if let error = error {
+                // TODO: handle the error.
+                print("Error: \(error.localizedDescription)")
+            } else {
+                self.imageView.image = photo;
+                //self.attributionTextView.attributedText = photoMetadata.attributions;
+            }
+        })
+    }
+    
     // TableView陣列
     var ListArray: NSMutableArray = []
-    
     var placesClient: GMSPlacesClient!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        
         placesClient = GMSPlacesClient.shared()
+        
+//        let placeID = "ChIJV4k8_9UodTERU5KXbkYpSYs"
+//        placesClient.lookUpPlaceID(placeID, callback: { (place, error) -> Void in
+//            if let error = error {
+//                print("lookup place id query error: \(error.localizedDescription)")
+//                return
+//            }
+//            
+//            guard let place = place else {
+//                print("No place details for \(placeID)")
+//                return
+//            }
+//            
+//            
+//            
+//            print("Place name \(place.name)")
+//            print("Place address \(place.formattedAddress)")
+//            print("Place placeID \(place.placeID)")
+//            print("Place attributions \(place.attributions)")
+//        })
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -61,10 +104,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     @IBAction func addSpotBtn(_ sender: Any) {
         // 加入搜尋列的輸入名稱
-        guard spotSearchTextField.text != "" else {
+        guard spotTextView.text != "" else {
             return
         }
-        let SpotSearchChar:String = spotSearchTextField.text!
+        let SpotSearchChar:String = spotTextView.text!
         // 欄位編號
         let SpotSearchNumber = String(ListArray.count+1)
         ListArray.add("No"+SpotSearchNumber+"."+SpotSearchChar)
@@ -72,28 +115,37 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @IBAction func searchBtn(_ sender: Any) {
-        let center = CLLocationCoordinate2D(latitude: 37.788204, longitude: -122.411937)
-        let northEast = CLLocationCoordinate2D(latitude: center.latitude + 0.001, longitude: center.longitude + 0.001)
-        let southWest = CLLocationCoordinate2D(latitude: center.latitude - 0.001, longitude: center.longitude - 0.001)
-        let viewport = GMSCoordinateBounds(coordinate: northEast, coordinate: southWest)
-        let config = GMSPlacePickerConfig(viewport: viewport)
+        
+        let config = GMSPlacePickerConfig(viewport: nil)
         let placePicker = GMSPlacePicker(config: config)
         
-        placePicker.pickPlace(callback: {(place, error) -> Void in
+        placePicker.pickPlace(callback: { (place, error) -> Void in
             if let error = error {
                 print("Pick Place error: \(error.localizedDescription)")
                 return
             }
             
-            //            if let place = place {
-            //                self.nameLabel.text = place.name
-            //                self.addressLabel.text = place.formattedAddress?.components(separatedBy: ", ")
-            //                    .joined(separator: "\n")
-            //            } else {
-            //                self.nameLabel.text = "No place selected"
-            //                self.addressLabel.text = ""
-            //            }
+            guard let place = place else {
+                print("No place selected")
+                return
+            }
+            self.spotTextView.text = place.name
+            self.placeIdStorage = place.placeID
+            
+            if(self.placeIdStorage != nil){
+                self.loadFirstPhotoForPlace(placeID: self.placeIdStorage)
+            } else {
+                //..
+            }
+            
+            print("Place name \(place.name)")
+            print("Place address \(place.formattedAddress)")
+            print("Place attributions \(place.attributions)")
+            
+            print("Place PlaceID \(place.placeID)")
+            
         })
+        
     }
 }
 
